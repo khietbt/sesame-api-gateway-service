@@ -7,3 +7,27 @@ spring:
     config:
       username: ${SPRING_CLOUD_CONFIG_USERNAME}
       password: ${SPRING_CLOUD_CONFIG_PASSWORD}
+    gateway:
+      routes:
+        - id: sesame-profile-service
+          uri: lb://sesame-profile-service
+          predicates:
+            - Path=/api/v1/sesame-profile-service/**
+          filters:
+            - RewritePath=/api/v1/sesame-profile-service/(?<remains>.*), /$\{remains}
+      discovery:
+        locator:
+          enabled: true
+  security:
+    oauth2:
+      resourceserver:
+        opaquetoken:
+          client-id: sesame-client
+          client-secret: DbALQszdGQhQiJ3MrJ1k8EPvgJtOtPRb
+          introspection-uri: http://localhost:8180/realms/sesame/protocol/openid-connect/token/introspect
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: gateway
