@@ -14,17 +14,34 @@ spring:
           predicates:
             - Path=/api/v1/sesame-profile-service/**
           filters:
+            - TokenRelay=
             - RewritePath=/api/v1/sesame-profile-service/(?<remains>.*), /$\{remains}
       discovery:
         locator:
           enabled: true
   security:
     oauth2:
+#      resourceserver:
+#        opaquetoken:
+#          client-id: sesame-client
+#          client-secret: DbALQszdGQhQiJ3MrJ1k8EPvgJtOtPRb
+#          introspection-uri: http://localhost:8180/realms/sesame/protocol/openid-connect/token/introspect
       resourceserver:
-        opaquetoken:
-          client-id: sesame-client
-          client-secret: DbALQszdGQhQiJ3MrJ1k8EPvgJtOtPRb
-          introspection-uri: http://localhost:8180/realms/sesame/protocol/openid-connect/token/introspect
+        jwt:
+          issuer-uri: http://localhost:8180/realms/sesame
+      client:
+        registration:
+          keycloak:
+            client-id: sesame-client
+            client-secret: DbALQszdGQhQiJ3MrJ1k8EPvgJtOtPRb
+            scope:
+              - openid
+            authorization-grant-type: authorization_code
+        provider:
+          keycloak:
+            user-name-attribute: preferred_username
+            issuer-uri: http://localhost:8180/realms/sesame
+            jwk-set-uri: http://localhost:8180/realms/sesame/protocol/openid-connect/certs
 
 management:
   endpoints:
