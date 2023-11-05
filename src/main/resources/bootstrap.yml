@@ -20,11 +20,6 @@ spring:
           enabled: true
   security:
     oauth2:
-#      resourceserver:
-#        opaquetoken:
-#          client-id: sesame-client
-#          client-secret: DbALQszdGQhQiJ3MrJ1k8EPvgJtOtPRb
-#          introspection-uri: http://localhost:8180/realms/sesame/protocol/openid-connect/token/introspect
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8180/realms/sesame
